@@ -3,11 +3,16 @@ import os
 import re
 import subprocess
 
-computer_name = open("/sys/devices/virtual/dmi/id/product_name").read().replace("\n", "")
-cpu_name = open("/proc/cpuinfo").read().splitlines()[4].split(": ")[1]
-distro = re.search(r"PRETTY_NAME=\"(.*?)\"", open("/etc/os-release").read()).group(1)
-ram_total = str(round(int(re.search(r"MemTotal:        (.*?) kB", open("/proc/meminfo").read()).group(1)) / 1024))
-ram_used = str(round(int(re.search(r"MemAvailable:    (.*?) kB", open("/proc/meminfo").read()).group(1)) / 1024))
+with open("/sys/devices/virtual/dmi/id/product_name") as file:
+  computer_name = file.read().replace("\n", "")
+with open("/proc/cpuinfo") as file:
+  cpu_name = file.read().splitlines()[4].split(": ")[1]
+with open("/etc/os-release") as file:
+  distro = re.search(r"PRETTY_NAME=\"(.*?)\"", file.read()).group(1)
+with open("/proc/meminfo") as file:
+  ram_total = str(round(int(re.search(r"MemTotal: +(\d+) kB", file.read()).group(1)) / 1024))
+  file.seek(0)
+  ram_used = str(round(int(re.search(r"MemAvailable: +(\d+) kB", file.read()).group(1)) / 1024))
 kernel = subprocess.check_output(['uname', '-r']).decode("utf-8").replace("\n", "")
 arch = subprocess.check_output(['uname', '-m']).decode("utf-8").replace("\n", "")
 terminal = subprocess.check_output(['ps -o comm= -p "$(($(ps -o ppid= -p "$(($(ps -o sid= -p "$$")))")))"'], shell=True).decode("utf-8").replace("\n", "")
