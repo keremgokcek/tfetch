@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import os
 import re
 import subprocess
 
@@ -13,6 +14,7 @@ terminal = subprocess.check_output(['ps -o comm= -p "$(($(ps -o ppid= -p "$(($(p
 uptime_c = subprocess.check_output(['uptime']).decode("utf-8").replace("\n", "")
 uptime = [re.findall(r"(\d+):(\d+)", uptime_c)[1][0], re.sub(r"0(\d)", r"\1", re.findall(r"(\d+):(\d+)", uptime_c)[1][1])]
 resolution = subprocess.check_output(['xdpyinfo | grep dimensions | sed -r \'s/^[^0-9]*([0-9]+x[0-9]+).*$/\\1/\''], shell=True).decode("utf-8").replace("\n", "")
+shell = os.path.basename(os.getenv("SHELL"))
 
 print("\x1b[32mComputer Name: \x1b[34m" + computer_name)
 print("\x1b[32mCPU Name:      \x1b[34m" + cpu_name)
@@ -23,4 +25,5 @@ print("\x1b[32mArchitecture:  \x1b[34m" + arch)
 print("\x1b[32mTerminal:      \x1b[34m" + terminal)
 print("\x1b[32mUptime:        \x1b[34m" + uptime[0] + " hours " + uptime[1] + " minutes")
 print("\x1b[32mResolution:    \x1b[34m" + resolution)
+print("\x1b[32mShell:         \x1b[34m" + shell)
 print("\x1b[0m", end="")
