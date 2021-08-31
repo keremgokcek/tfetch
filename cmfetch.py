@@ -16,8 +16,13 @@ with open("/proc/meminfo") as file:
 kernel = subprocess.check_output(['uname', '-r']).decode("utf-8").replace("\n", "")
 arch = subprocess.check_output(['uname', '-m']).decode("utf-8").replace("\n", "")
 terminal = subprocess.check_output(['ps -o comm= -p "$(($(ps -o ppid= -p "$(($(ps -o sid= -p "$$")))")))"'], shell=True).decode("utf-8").replace("\n", "")
-uptime_c = subprocess.check_output(['uptime']).decode("utf-8").replace("\n", "")
-uptime = [re.findall(r"(\d+):(\d+)", uptime_c)[1][0], re.sub(r"0(\d)", r"\1", re.findall(r"(\d+):(\d+)", uptime_c)[1][1])]
+def get_uptime():
+  uptime_c = subprocess.check_output(['uptime']).decode("utf-8").replace("\n", "")
+  try:
+    uptime = [re.findall(r"(\d+):(\d+)", uptime_c)[1][0], re.sub(r"0(\d)", r"\1", re.findall(r"(\d+):(\d+)", uptime_c)[1][1])]
+  except:
+    uptime = ["0", re.findall(r"(\d+) min", uptime_c)[0]]
+  return uptime
 resolution = subprocess.check_output(['xdpyinfo | grep dimensions | sed -r \'s/^[^0-9]*([0-9]+x[0-9]+).*$/\\1/\''], shell=True).decode("utf-8").replace("\n", "")
 shell = os.path.basename(os.getenv("SHELL")) 
 de = os.getenv("XDG_CURRENT_DESKTOP")
@@ -30,7 +35,11 @@ print("\x1b[32mRam:           \x1b[34m" + ram_used + "/" + ram_total + " MB")
 print("\x1b[32mKernel:        \x1b[34m" + kernel)
 print("\x1b[32mArchitecture:  \x1b[34m" + arch)
 print("\x1b[32mTerminal:      \x1b[34m" + terminal)
-print("\x1b[32mUptime:        \x1b[34m" + uptime[0] + " hours " + uptime[1] + " minutes")
+uptime = get_uptime()
+if uptime[0] == "0":
+  print("\x1b[32mUptime:        \x1b[34m" + uptime[1] + " minutes")
+else:
+  print("\x1b[32mUptime:        \x1b[34m" + uptime[0] + " hours " + uptime[1] + " minutes")
 print("\x1b[32mResolution:    \x1b[34m" + resolution)
 print("\x1b[32mShell:         \x1b[34m" + shell)
 print("\x1b[32mDE:            \x1b[34m" + de)
