@@ -12,23 +12,18 @@ assignees: ''
 Buraya hatayı yazın.
 ```
 
-**Nasıl buldum**
-
+**Nasıl buldum**<br/>
 Hatayı '...' anında '...' yaparak buldum.
 
-**Olması gereken**
-
+**Olması gereken**<br/>
 Normalde '...' olması gerekiyordu.
 
-**Ekran görüntüleri**
-
+**Ekran görüntüleri**<br/>
 Mümkünse, sorununuzu açıklamanıza yardım edecek birkaç ekran görüntüsü ekleyin.
 
-**Sistem bilgileri**
-
+**Sistem bilgileri**<br/>
  - İşletim Sistemi: 
  - Python sürümü:
 
-**Ek bilgi**
-
+**Ek bilgi**<br/>
 Eklemeniz gereken bir şey varsa buraya ekleyin.
