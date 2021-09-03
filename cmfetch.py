@@ -3,6 +3,27 @@ import os
 import re
 import subprocess
 
+def escape_ansi(line):
+    ansi_escape =re.compile(r'(\x9B|\x1B\[)[0-?]*[ -\/]*[@-~]')
+    return ansi_escape.sub('', line)
+
+cm = {
+  'rown': 0,
+  'coln': 0,
+  'content': ""
+}
+
+with open("/etc/cmfetch/cm", encoding='unicode_escape') as file:
+  cm['content'] = file.read()
+  file.seek(0)
+  for i in file.read().splitlines():
+    if len(escape_ansi(i)) + 1 > cm['rown']:
+      cm['rown'] = len(escape_ansi(i)) + 1
+  file.seek(0)
+  cm['coln'] = len(file.read().splitlines())
+
+print(cm['content'])
+
 with open("/sys/devices/virtual/dmi/id/product_name") as file:
   computer_name = file.read().replace("\n", "")
 with open("/proc/cpuinfo") as file:
@@ -23,6 +44,7 @@ def get_uptime():
   except:
     uptime = ["0", re.findall(r"(\d+) min", uptime_c)[0]]
   return uptime
+
 def get_resolution():
   resolution_a = subprocess.check_output(['xrandr -q | grep \' connected\''], shell=True).decode("utf-8").splitlines()
   resolution = []
@@ -34,13 +56,22 @@ shell = os.path.basename(os.getenv("SHELL"))
 de = os.getenv("XDG_CURRENT_DESKTOP")
 wm = subprocess.check_output("ps -e | grep -m 1 -o -F -e arcan -e asc -e clayland -e dwc -e fireplace -e gnome-shell -e greenfield -e grefsen -e hikari -e kwin -e lipstick -e maynard -e mazecompositor -e motorcar -e orbital -e orbment -e perceptia -e river -e rustland -e sway -e ulubis -e velox -e wavy -e way-cooler -e wayfire -e wayhouse -e westeros -e westford -e weston -e i3 -e dwm", shell=True).decode("utf-8").replace("\n", "")
 
+print(f"\033[{cm['coln']}A", end="")
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mComputer Name: \x1b[34m" + computer_name)
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mCPU Name:      \x1b[34m" + cpu_name)
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mDistro:        \x1b[34m" + distro)
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mRam:           \x1b[34m" + ram_used + "/" + ram_total + " MB")
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mKernel:        \x1b[34m" + kernel)
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mArchitecture:  \x1b[34m" + arch)
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mTerminal:      \x1b[34m" + terminal)
+print(f"\033[{cm['rown']}C", end="")
 uptime = get_uptime()
 if uptime[0] == "0":
   print("\x1b[32mUptime:        \x1b[34m" + uptime[1] + " minutes")
@@ -48,10 +79,14 @@ else:
   print("\x1b[32mUptime:        \x1b[34m" + uptime[0] + " hours " + uptime[1] + " minutes")
 i=1
 for resolution in get_resolution():
+  print(f"\033[{cm['rown']}C", end="")
   print("\x1b[32mResolution " + str(i) + ":  \x1b[34m" + resolution)
   i += 1
+print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mShell:         \x1b[34m" + shell)
+print(f"\033[{cm['rown']}C", end="")
 if de != None:
   print("\x1b[32mDE:            \x1b[34m" + de)
+  print(f"\033[{cm['rown']}C", end="")
 print("\x1b[32mWM:            \x1b[34m" + wm)
 print("\x1b[0m", end="")
