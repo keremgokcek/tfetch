@@ -23,10 +23,16 @@ def get_uptime():
   except:
     uptime = ["0", re.findall(r"(\d+) min", uptime_c)[0]]
   return uptime
-resolution = subprocess.check_output(['xdpyinfo | grep dimensions | sed -r \'s/^[^0-9]*([0-9]+x[0-9]+).*$/\\1/\''], shell=True).decode("utf-8").replace("\n", "")
+def get_resolution():
+  resolution_a = subprocess.check_output(['xrandr -q | grep \' connected\''], shell=True).decode("utf-8").splitlines()
+  resolution = []
+  for i in resolution_a:
+    resolution.append(re.search(r"\d+x\d+", i).group(0))
+  return resolution
+
 shell = os.path.basename(os.getenv("SHELL")) 
 de = os.getenv("XDG_CURRENT_DESKTOP")
-wm = subprocess.check_output("ps -e | grep -m 1 -o -F -e arcan -e asc -e clayland -e dwc -e fireplace -e gnome-shell -e greenfield -e grefsen -e hikari -e kwin -e lipstick -e maynard -e mazecompositor -e motorcar -e orbital -e orbment -e perceptia -e river -e rustland -e sway -e ulubis -e velox -e wavy -e way-cooler -e wayfire -e wayhouse -e westeros -e westford -e weston", shell=True).decode("utf-8").replace("\n", "")
+wm = subprocess.check_output("ps -e | grep -m 1 -o -F -e arcan -e asc -e clayland -e dwc -e fireplace -e gnome-shell -e greenfield -e grefsen -e hikari -e kwin -e lipstick -e maynard -e mazecompositor -e motorcar -e orbital -e orbment -e perceptia -e river -e rustland -e sway -e ulubis -e velox -e wavy -e way-cooler -e wayfire -e wayhouse -e westeros -e westford -e weston -e i3 -e dwm", shell=True).decode("utf-8").replace("\n", "")
 
 print("\x1b[32mComputer Name: \x1b[34m" + computer_name)
 print("\x1b[32mCPU Name:      \x1b[34m" + cpu_name)
@@ -40,8 +46,12 @@ if uptime[0] == "0":
   print("\x1b[32mUptime:        \x1b[34m" + uptime[1] + " minutes")
 else:
   print("\x1b[32mUptime:        \x1b[34m" + uptime[0] + " hours " + uptime[1] + " minutes")
-print("\x1b[32mResolution:    \x1b[34m" + resolution)
+i=1
+for resolution in get_resolution():
+  print("\x1b[32mResolution " + str(i) + ":  \x1b[34m" + resolution)
+  i += 1
 print("\x1b[32mShell:         \x1b[34m" + shell)
-print("\x1b[32mDE:            \x1b[34m" + de)
+if de != None:
+  print("\x1b[32mDE:            \x1b[34m" + de)
 print("\x1b[32mWM:            \x1b[34m" + wm)
 print("\x1b[0m", end="")
