@@ -54,7 +54,7 @@ def get_resolution():
 
 shell = os.path.basename(os.getenv("SHELL")) 
 de = os.getenv("XDG_CURRENT_DESKTOP")
-wm = subprocess.check_output("ps -e | grep -m 1 -o -F -e arcan -e asc -e clayland -e dwc -e fireplace -e gnome-shell -e greenfield -e grefsen -e hikari -e kwin -e lipstick -e maynard -e mazecompositor -e motorcar -e orbital -e orbment -e perceptia -e river -e rustland -e sway -e ulubis -e velox -e wavy -e way-cooler -e wayfire -e wayhouse -e westeros -e westford -e weston -e i3 -e dwm", shell=True).decode("utf-8").replace("\n", "")
+wm = subprocess.check_output("ps -e | grep -m 1 -o -F -e arcan -e asc -e clayland -e dwc -e fireplace -e gnome-shell -e greenfield -e grefsen -e hikari -e kwin -e lipstick -e maynard -e mazecompositor -e motorcar -e orbital -e orbment -e perceptia -e river -e rustland -e sway -e ulubis -e velox -e wavy -e way-cooler -e wayfire -e wayhouse -e westeros -e westford -e weston -e i3 -e dwm -e openbox", shell=True).decode("utf-8").replace("\n", "")
 
 print(f"\033[{cm['coln']}A", end="")
 print(f"\033[{cm['rown']}C", end="")
