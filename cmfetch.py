@@ -33,7 +33,7 @@ with open("/etc/os-release") as file:
 with open("/proc/meminfo") as file:
   ram_total = str(round(int(re.search(r"MemTotal: +(\d+) kB", file.read()).group(1)) / 1024))
   file.seek(0)
-  ram_used = str(round(int(re.search(r"MemAvailable: +(\d+) kB", file.read()).group(1)) / 1024))
+  ram_used = str(int(ram_total) + round(int(re.search(r"MemAvailable: +(\d+) kB", file.read()).group(1)) / 1024))
 kernel = subprocess.check_output(['uname', '-r']).decode("utf-8").replace("\n", "")
 arch = subprocess.check_output(['uname', '-m']).decode("utf-8").replace("\n", "")
 terminal = subprocess.check_output(['ps -o comm= -p "$(($(ps -o ppid= -p "$(($(ps -o sid= -p "$$")))")))"'], shell=True).decode("utf-8").replace("\n", "")
