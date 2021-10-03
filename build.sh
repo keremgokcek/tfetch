@@ -1,0 +1,1 @@
+g++ -pthread -std=c++17 -o cmfetch cmfetch.cpp
