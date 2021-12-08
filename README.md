@@ -12,4 +12,9 @@ chmod +x tfetch
 cp tfetch /usr/bin/cmfetch
 ```
 ## Usage
-For normal usage just type `tfetch`. If you want to clear terminal before running type `tfetch --clear`.
+Just type `tfetch`. 
+
+### Arguments
+| Argument | Description |
+| -------- | ----------- |
+| `--clear` | Clear screen before running |
