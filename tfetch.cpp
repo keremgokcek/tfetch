@@ -308,7 +308,7 @@ std::string get_wm() {
                           " -e greenfield -e grefsen -e hikari -e kwin -e lipstick -e maynard -e mazecompositor"
                           " -e motorcar -e orbital -e orbment -e perceptia -e river -e rustland -e sway -e ulubis"
                           " -e velox -e wavy -e way-cooler -e wayfire -e wayhouse -e westeros -e westford -e weston"
-                          " -e i3 -e dwm -e openbox");
+                          " -e i3 -e dwm -e openbox -e worm");
 
     // Erase line breaks.
     while (wm.find('\n') != std::string::npos) {
