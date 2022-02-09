@@ -9,7 +9,7 @@ g++ -pthread -std=c++17 -o tfetch tfetch.cpp
 ## Installing
 ```
 chmod +x tfetch
-cp tfetch /usr/bin/cmfetch
+cp tfetch /usr/bin/tfetch
 ```
 ## Usage
 Just type `tfetch`. 
